@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-15" standalone="no"?><uc-export clientvers="11.0.0">
+<JOBI name="PCK.AUTOMIC_CVS.PRV.JOBI.LOGIN@UNIX">
+<HEADER state="1">
+<Title>cvs.login</Title>
+<ArchiveKey1/>
+<ArchiveKey2/>
+<OH_SubType/>
+</HEADER>
+<SCRIPT mode="1" state="1">
+<MSCRI><![CDATA[!Inserts the Password into the URI and Executes the Login Command
+:INCLUDE PCK.ITPA_SHARED.PUB.INCLUDE.ATTACH
+:IF STR_FIND(&UC4RB_CVS_URI#, ":pserver:") > 0
+:  SET &UC4RB_ENCRYPTED_PASSWORD_TMP#=&UC4RB_CVS_PASSWORD#
+:  INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.DECRYPT_PASSWORD
+:  SET &UC4RB_CVS_PASSWORD# = "$UC4_DECRYPTED_PWD"
+:  SET &uriPassword = STR_CAT(&UC4RB_CVS_PASSWORD#, "@")
+:  SET &uriReplaceString = STR_CAT(":", &uriPassword)
+:  SET &uriCommand = STR_SUBSTITUTE(&UC4RB_CVS_URI#, "@", &uriReplaceString)
+   cvs -d &uriCommand login
+:INCLUDE PCK.ITPA_SHARED.PRV.INCLUDE.CHECK_SHELL_CMD@UNIX
+:ENDIF]]></MSCRI>
+</SCRIPT>
+<DOCU_Docu state="1" type="text">
+<DOC/>
+</DOCU_Docu>
+</JOBI>
+</uc-export>
